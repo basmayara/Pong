@@ -1,4 +1,4 @@
-// BoardBounds.cs
+
 using UnityEngine;
 
 public class BoardBounds : MonoBehaviour

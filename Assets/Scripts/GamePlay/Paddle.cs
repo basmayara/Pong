@@ -1,4 +1,4 @@
-// Paddle.cs
+
 using UnityEngine;
 
 public class Paddle : MonoBehaviour
@@ -14,7 +14,7 @@ public class Paddle : MonoBehaviour
 
     private void Awake()
     {
-        // Fail loudly: a silent return would hide a setup mistake.
+       
         if (board == null)
             Debug.LogError($"{name}: Paddle has no BoardBounds assigned.", this);
     }

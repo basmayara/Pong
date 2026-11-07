@@ -8,10 +8,11 @@ public class GameManager : MonoBehaviour
 
     public GameState State { get; private set; }
     public int Score { get; private set; }
+    public LeaderboardService Leaderboard { get; } = new LeaderboardService();
 
     public event Action OnGameStarted;
     public event Action<int> OnScoreChanged;
-    public event Action<int> OnGameOver;
+    public event Action<int, int> OnGameOver; // (finalScore, rank)
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+        Leaderboard.Initialize();
     }
 
     private void OnDestroy()
@@ -34,7 +36,6 @@ public class GameManager : MonoBehaviour
     {
         Score = 0;
         State = GameState.Playing;
-
         OnScoreChanged?.Invoke(Score);
         OnGameStarted?.Invoke();
     }
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour
         if (State != GameState.Playing) return;
 
         State = GameState.GameOver;
-        OnGameOver?.Invoke(Score);
+        int rank = Leaderboard.Submit(Score);
+        OnGameOver?.Invoke(Score, rank);
     }
 }
