@@ -1,4 +1,3 @@
-
 using TMPro;
 using UnityEngine;
 
@@ -8,11 +7,17 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private TMP_Text finalScoreLabel;
     [SerializeField] private LeaderboardView leaderboardView;
 
-    private void Awake() => panel.SetActive(false);
+    private void Awake()
+    {
+        panel.SetActive(false);
+    }
 
-    private void OnEnable() => GameManager.Instance.OnGameOver += Show;
+    private void Start()
+    {
+        GameManager.Instance.OnGameOver += Show;
+    }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         if (GameManager.Instance != null)
             GameManager.Instance.OnGameOver -= Show;
@@ -22,7 +27,12 @@ public class GameOverUI : MonoBehaviour
     {
         panel.SetActive(true);
         finalScoreLabel.text = $"Score: {score}";
-        leaderboardView.Show(GameManager.Instance.Leaderboard.Scores, rank);
+
+        bool hasScored = score > 0;
+        leaderboardView.gameObject.SetActive(hasScored);
+
+        if (hasScored)
+            leaderboardView.Show(GameManager.Instance.Leaderboard.Scores, rank);
     }
 
     // Hooked to the Retry and Menu buttons.

@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
     {
         if (State != GameState.Playing) return;
 
+        Debug.Log("PlayerMissed called from:\n" + Environment.StackTrace);
+
         State = GameState.GameOver;
         int rank = Leaderboard.Submit(Score);
         OnGameOver?.Invoke(Score, rank);
